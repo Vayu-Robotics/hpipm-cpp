@@ -40,18 +40,18 @@ void OcpQpDim::resize(const std::vector<OcpQp>& ocp_qp) {
     nbx[i]  = ocp_qp[i].idxbx.size();
     nbu[i]  = ocp_qp[i].idxbu.size();
     ng[i]   = ocp_qp[i].lg.size();
-    nsbx[i] = ocp_qp[i].idxs.size();
+    nsbx[i] = 0;
     nsbu[i] = 0;
-    nsg[i]  = 0;
+    nsg[i]  = ocp_qp[i].idxs.size();
   }
   nx[N]   = ocp_qp[N].q.size();
   nu[N]   = 0;
   nbx[N]  = ocp_qp[N].idxbx.size();
   nbu[N]  = 0;
   ng[N]   = ocp_qp[N].lg.size();
-  nsbx[N] = ocp_qp[N].idxs.size();
+  nsbx[N] = 0;
   nsbu[N] = 0;
-  nsg[N]  = 0;
+  nsg[N]  = ocp_qp[N].idxs.size();
   checkSize(ocp_qp);
 }
 
@@ -213,36 +213,36 @@ void OcpQpDim::checkSize(const std::vector<OcpQp>& ocp_qp) const {
   if (ocp_qp[N].ug_mask.size() != 0 && ocp_qp[N].ug_mask.size() != ng[N]) {
     throw std::runtime_error("ocp_qp[" + std::to_string(N) + "].ug_mask.size() must be 0 or " + std::to_string(ng[N]));
   }
-  // // soft constraints 
-  // for (unsigned int i=0; i<N; ++i) {
-  //   if (ocp_qp[i].Zl.rows() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zl.rows() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].Zl.cols() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zl.cols() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].Zu.rows() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zu.rows() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].Zu.cols() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zu.cols() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].zl.size() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].zl.size() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].zu.size() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].zl.size() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].idxs.size() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].idxs.size() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].lls.size() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].lls.size() must be " + std::to_string(nsg[i]));
-  //   }
-  //   if (ocp_qp[i].lus.size() != nsg[i]) {
-  //     throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].lus.size() must be " + std::to_string(nsg[i]));
-  //   }
-  // }
+  // soft constraints 
+  for (unsigned int i=0; i<N; ++i) {
+    if (ocp_qp[i].Zl.rows() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zl.rows() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].Zl.cols() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zl.cols() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].Zu.rows() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zu.rows() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].Zu.cols() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].Zu.cols() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].zl.size() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].zl.size() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].zu.size() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].zl.size() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].idxs.size() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].idxs.size() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].lls.size() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].lls.size() must be " + std::to_string(nsg[i]));
+    }
+    if (ocp_qp[i].lus.size() != nsg[i]) {
+      throw std::runtime_error("ocp_qp[" + std::to_string(i) + "].lus.size() must be " + std::to_string(nsg[i]));
+    }
+  }
 }
 
 } // namespace hpipm
