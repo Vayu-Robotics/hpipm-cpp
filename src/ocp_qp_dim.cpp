@@ -42,7 +42,7 @@ void OcpQpDim::resize(const std::vector<OcpQp>& ocp_qp) {
     ng[i]   = ocp_qp[i].lg.size();
     nsbx[i] = ocp_qp[i].idxs.size();
     nsbu[i] = 0;
-    nsg[i]  = 0;
+    nsg[i]  = ocp_qp[i].lg.size();
   }
   nx[N]   = ocp_qp[N].q.size();
   nu[N]   = 0;
@@ -51,7 +51,7 @@ void OcpQpDim::resize(const std::vector<OcpQp>& ocp_qp) {
   ng[N]   = ocp_qp[N].lg.size();
   nsbx[N] = ocp_qp[N].idxs.size();
   nsbu[N] = 0;
-  nsg[N]  = 0;
+  nsg[N]  = ocp_qp[N].lg.size();
   checkSize(ocp_qp);
 }
 
